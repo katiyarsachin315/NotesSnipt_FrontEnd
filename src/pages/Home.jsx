@@ -11,7 +11,11 @@ const Home = () => {
   const [selectedNote, setSelectedNote] = useState(null);
   const [search, setSearch] = useState("");
   const [copyStatus, setCopyStatus] = useState("Copy");
-  const [userInitials, setUserInitials] = useState(""); // State for Initials
+  
+  // User Data States
+  const [userInitials, setUserInitials] = useState(""); 
+  const [userInfo, setUserInfo] = useState(null); // To store full name/email
+  
   const navigate = useNavigate();
 
   // 1. Fetch User Details & Initials
@@ -20,9 +24,10 @@ const Home = () => {
     if (userData) {
       try {
         const user = JSON.parse(userData);
+        setUserInfo(user); // Save full object for the dropdown
+
         if (user.full_name) {
           const names = user.full_name.split(" ");
-          // Get first letter of first name + first letter of last name
           const initials = names.length > 1 
             ? `${names[0][0]}${names[names.length - 1][0]}` 
             : `${names[0][0]}${names[0][1] || ''}`;
@@ -33,6 +38,13 @@ const Home = () => {
       }
     }
   }, []);
+
+  // 2. Logout Function
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("userDetails");
+    navigate("/login");
+  };
 
   useEffect(() => {
     api.get("/notesapp/getnotes/").then((res) => setNotes(res.data));
@@ -65,7 +77,6 @@ const Home = () => {
   );
 
   return (
-    // 1. MAIN BACKGROUND
     <div className="min-h-screen font-sans text-slate-800 relative bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       
       {/* --- BACKGROUND BLOBS --- */}
@@ -102,10 +113,9 @@ const Home = () => {
               />
             </div>
 
-            {/* Right Side: Button + Avatar */}
+            {/* Right Side: Button + User Menu */}
             <div className="flex items-center gap-4">
               
-              {/* Create New Button */}
               <button 
                 onClick={() => navigate('/CreateNote')} 
                 className="whitespace-nowrap rounded-lg bg-gradient-to-r from-blue-500 to-[#6C92F4] px-5 py-2.5 text-sm font-medium text-white shadow-md hover:shadow-blue-200 hover:-translate-y-0.5 transition-all"
@@ -113,17 +123,47 @@ const Home = () => {
                 + Create New
               </button>
 
-              {/* User Avatar (Initials) */}
+              {/* ================= USER PROFILE DROPDOWN (Better Approach) ================= */}
               {userInitials && (
-                <div 
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-100 border border-indigo-200 shadow-sm text-indigo-700 font-bold text-sm tracking-wide cursor-default"
-                  title="Profile"
-                >
-                  {userInitials}
+                <div className="relative group">
+                  {/* 1. The Avatar Circle */}
+                  <div 
+                    className="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-100 border border-indigo-200 shadow-sm text-indigo-700 font-bold text-sm tracking-wide cursor-pointer transition-transform group-hover:scale-105"
+                  >
+                    {userInitials}
+                  </div>
+
+                  {/* 2. The Dropdown Menu (Hidden by default, visible on group-hover) */}
+                  <div className="absolute right-0 top-full mt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
+                     <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+                        
+                        {/* User Info Section */}
+                        <div className="px-4 py-3 border-b border-gray-50 bg-gray-50/50">
+                           <p className="text-sm font-bold text-slate-800 truncate">
+                             {userInfo?.full_name || "User"}
+                           </p>
+                           <p className="text-xs text-slate-500 truncate">
+                             {userInfo?.email || "user@email.com"}
+                           </p>
+                        </div>
+
+                        {/* Logout Button */}
+                        <button 
+                          onClick={handleLogout}
+                          className="w-full text-left px-4 py-2.5 text-sm text-red-600 font-medium hover:bg-red-50 transition-colors flex items-center gap-2"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                          Logout
+                        </button>
+                     </div>
+                  </div>
+                  {/* Invisible bridge to prevent menu from closing when moving mouse from avatar to menu */}
+                  <div className="absolute top-full right-0 h-2 w-full"></div>
                 </div>
               )}
-            </div>
+              {/* ========================================================================= */}
 
+            </div>
           </div>
         </div>
 
