@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+/* =========================================
+   GLOBAL ATTRACTIVE SCROLLBAR
+   ========================================= */
+
+/* --- 1. Firefox Support --- */
+* {
+  scrollbar-width: thin;          /* Makes it slim */
+  scrollbar-color: #cbd5e1 transparent; /* thumb(grey) track(transparent) */
+}
+
+/* --- 2. Webkit Support (Chrome, Edge, Safari) --- */
+
+/* Width & Height */
+::-webkit-scrollbar {
+  width: 8px;   /* Width for vertical scrollbars */
+  height: 8px;  /* Height for horizontal scrollbars */
+}
+
+/* Track (The background area) */
+::-webkit-scrollbar-track {
+  background: transparent; /* Keeps it clean/glassy */
+  margin: 4px; /* Adds a little spacing from edges */
+}
+
+/* Thumb (The moving handle) */
+::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1; /* Slate-300: Matches your theme */
+  border-radius: 10px;       /* Makes it fully rounded */
+  border: 2px solid transparent; /* Optional: adds breathing room */
+  background-clip: content-box;
+}
+
+/* Thumb Hover State */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8; /* Slate-400: Darkens slightly on interaction */
+}
+
+/* =========================================
+   DARK MODE SCROLLBAR (For Code Editor)
+   ========================================= */
+/* Since your code editor is dark (#1e1e1e), the global light scrollbar 
+   might look odd there. Use this specific class to override it. */
+
+.dark-scrollbar {
+  scrollbar-color: #4b5563 #1e1e1e;
+}
+
+.dark-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #4b5563; /* Darker Grey */
+}
+
+.dark-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #6b7280; /* Lighter Grey on hover */
+}
+
+.dark-scrollbar::-webkit-scrollbar-track {
+  background: #1e1e1e; /* Matches code editor background */
+}
