@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://katiyarsachin315.pythonanywhere.com/api';
+// 🔥 LOCAL BACKEND URL - Change this on production
+const BASE_URL = 'http://127.0.0.1:8000/api';
 
 // ============================================================
 // 1. OPEN INSTANCE (For Login, Signup - No Token Required)
@@ -13,7 +14,7 @@ export const openApi = axios.create({
 });
 
 // ============================================================
-// 2. PROTECTED INSTANCE (For CRUD Operations - With Token)
+// 2. PROTECTED INSTANCE (For Normal User CRUD - With User Token)
 // ============================================================
 const api = axios.create({
   baseURL: BASE_URL,
@@ -22,7 +23,7 @@ const api = axios.create({
   },
 });
 
-// Interceptor: Automatically adds the Token to every request
+// Interceptor for Normal User: Adds 'access_token'
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access_token');
@@ -31,9 +32,30 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
+// ============================================================
+// 3. ADMIN INSTANCE (For Admin Dashboard - With Admin Token)
+// ============================================================
+export const adminApi = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Interceptor for Admin: Adds 'admin_token'
+adminApi.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('admin_token');
+    if (token) {
+      config.headers.Authorization = `Token ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Default export is the normal user api
 export default api;

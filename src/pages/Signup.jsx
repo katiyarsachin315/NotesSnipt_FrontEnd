@@ -54,7 +54,7 @@ const Signup = () => {
       setShowSuccess(true); 
       
       setTimeout(() => {
-        navigate('/login');
+        navigate('/');
       }, 2000);
 
     } catch (err) {
@@ -185,7 +185,7 @@ const Signup = () => {
             {/* Footer Links */}
             <p className="mt-5 text-center text-xs text-slate-500">
               Already have an account?{' '}
-              <Link to="/login" className="font-semibold text-[#6C92F4] hover:text-blue-600 hover:underline">
+              <Link to="/" className="font-semibold text-[#6C92F4] hover:text-blue-600 hover:underline">
                 Log In
               </Link>
             </p>

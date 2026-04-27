@@ -31,7 +31,7 @@ const CreateNote = () => {
       await api.post('/notesapp/create/', formData);
       setShowSuccess(true); 
       setTimeout(() => {
-        navigate('/'); 
+        navigate('/home'); 
       }, 1000);
     } catch (err) {
       console.error("Error creating note:", err);
@@ -59,7 +59,7 @@ const CreateNote = () => {
       <div className="shrink-0 z-30 bg-white/80 backdrop-blur-md border-b border-white/50 shadow-sm px-6 py-4">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
             <button 
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/home')}
               className="
                 group flex items-center px-4 py-2 
                 text-sm font-medium text-slate-600 
@@ -169,7 +169,7 @@ const CreateNote = () => {
                 <div className="flex items-center gap-4 pt-4">
                   <button
                     type="button"
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate('/home')}
                     className="flex-1 px-6 py-3 rounded-xl border border-gray-300 text-slate-600 font-medium hover:bg-gray-50 transition-all bg-white/50"
                   >
                     Cancel
