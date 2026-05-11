@@ -48,15 +48,30 @@ const Login = () => {
         localStorage.setItem("userDetails", JSON.stringify({ id, full_name, email }));
         navigate("/home");
       }
-    } catch (err) {
-      if (err.response && err.response.data) {
-        setError(err.response.data.detail || "Invalid email or password.");
-      } else {
-        setError("Something went wrong. Please try again.");
-      }
-    } finally {
-      setLoading(false);
+} catch (err) {
+
+  if (err.response && err.response.data) {
+
+    const errors = err.response.data;
+
+    // 🔥 Get first backend error key
+    const firstKey = Object.keys(errors)[0];
+
+    if (firstKey && Array.isArray(errors[firstKey])) {
+      setError(errors[firstKey][0]);
+    } else if (firstKey) {
+      setError(errors[firstKey]);
+    } else {
+      setError("Invalid email or password.");
     }
+
+  } else {
+    setError("Something went wrong. Please try again.");
+  }
+
+} finally {
+  setLoading(false);
+}
   };
 
   return (

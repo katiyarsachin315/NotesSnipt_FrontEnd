@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../utils/api";
+import { openApi } from "../utils/api";
 import { useNavigate } from 'react-router-dom';
 import Prism from "prismjs";
 import "prismjs/themes/prism-tomorrow.css";
@@ -97,10 +98,31 @@ const Home = () => {
     } 
   };
 
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/");
-  };
+  // const handleLogout = () => {
+  //   localStorage.clear();
+  //   navigate("/");
+  // };
+
+  const handleLogout = async () => {
+
+  const token = localStorage.getItem("access_token");
+  console.log(localStorage.getItem("access_token"))
+
+  await openApi.post(
+    "/accounts/logout/",
+    {},
+    {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }
+  );
+
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("userDetails");
+
+  navigate("/");
+};
 
   const handleCopy = () => {
     if (selectedNote?.content) {
