@@ -459,7 +459,7 @@ const AdminDashboard = () => {
       isOpen: true,
       type: "warning",
       title: "Move to Trash?",
-      message: `Snippet "${noteTitle}" will be permanently deleted. You can't restore it later.`,
+      message: `Snippet "${noteTitle}" will be moved to trash. You can restore it later.`,
       onConfirm: async () => {
         try {
           await adminApi.delete(`/notesapp/admin/note/${noteId}/delete/`);
@@ -549,7 +549,7 @@ const AdminDashboard = () => {
   const totalNotes = users.reduce((sum, u) => sum + u.notes.length, 0);
 
   // ------------------------------------------------------------------
-  // Logout (fixed: uses admin logout API and clears all storage)
+  // Logout - redirects to /control-center as requested
   // ------------------------------------------------------------------
   const handleLogout = async () => {
     const token = localStorage.getItem("admin_token") || localStorage.getItem("access_token");
@@ -569,7 +569,7 @@ const AdminDashboard = () => {
     localStorage.removeItem("userDetails");
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
-    navigate("/control-center");
+    navigate("/control-center");   // ✅ Changed to control-center
   };
 
   const getCardClass = (filterValue) => {
