@@ -4,7 +4,7 @@ import axios from 'axios';
 // const BASE_URL = 'http://127.0.0.1:8000/api';
 
 // 🌐 PRODUCTION BACKEND URL
-const BASE_URL = 'http://80.225.205.208:8000/api';
+const BASE_URL = 'https://notessnipt.duckdns.org/api';
 
 // ============================================================
 // 1. OPEN INSTANCE (For Login, Signup - No Token Required)
