@@ -502,7 +502,7 @@ const AdminDashboard = () => {
       message: `Snippet "${noteTitle}" will be permanently removed and cannot be restored.`,
       onConfirm: async () => {
         try {
-          await adminApi.delete(`/notesapp/admin/note/${noteId}/permanent/`);
+          await adminApi.delete(`/notesapp/admin/note/${noteId}/delete/`);
           if (view === "detail" && selectedUser) await fetchUserDetails(selectedUser.id);
           else await fetchUsers();
           showToast("Note permanently deleted", "success");
