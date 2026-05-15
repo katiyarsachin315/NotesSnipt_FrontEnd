@@ -5,7 +5,7 @@ import axios from 'axios';
 
 // 🌐 PRODUCTION BACKEND URL
 const BASE_URL = 'https://notessnipt.duckdns.org/api';
-
+// console.log(BASE_URL)
 // ============================================================
 // 1. OPEN INSTANCE (For Login, Signup - No Token Required)
 // ============================================================
